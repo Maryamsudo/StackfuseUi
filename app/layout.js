@@ -6,7 +6,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <main className="flex-1 md:ml-6 lg:ml-12 overflow-y-auto">
+    <main className="flex-1  overflow-y-auto">
           {children}
         </main>
       </body>

@@ -33,11 +33,11 @@ export default function LeadManagementHeader() {
   ];
 
   return (
-    <section className="space-y-6 pt-12 md:pt-0">
+    <section className="space-y-6 ">
       <div className="space-y-1">
-        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+        {/*<h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
           Lead Management
-        </h1>
+        </h1>  */} 
       
       </div>
 
