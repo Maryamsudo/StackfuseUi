@@ -1,19 +1,31 @@
 "use client";
-import { useState } from "react";
-import {LayoutDashboard,Upload,Users,Megaphone,Inbox,Sliders,Settings,ChevronDown,Menu,X,ChevronRight,} from "lucide-react";
+
+import { useState, useCallback } from "react";
+import {
+  LayoutDashboard,
+  Upload,
+  Users,
+  Megaphone,
+  Inbox,
+  Sliders,
+  Settings,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"] });
-
 export default function SidebarLayout({ children }) {
   const [openLeadSourcing, setOpenLeadSourcing] = useState(true);
   const [activeItem, setActiveItem] = useState("Attach CRM");
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [tabletHover, setTabletHover] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const SidebarContent = ({ isMini, isMobile }) => {
-  const isCollapsed = isMini ? !tabletHover : sidebarCollapsed;
-  const showText = isMobile || !isCollapsed;
+  const [mobileOpen, setMobileOpen] = useState(false);
 
+  const handleCloseMobile = useCallback(() => {
+    setMobileOpen(false);
+  }, []);
+
+  const SidebarContent = ({ isMini = false, isMobile = false }) => {
     return (
       <div
         className={`${inter.className} h-full flex flex-col bg-[#F9FAFB]`}
@@ -21,72 +33,41 @@ export default function SidebarLayout({ children }) {
         onMouseLeave={() => isMini && setTabletHover(false)}
       >
         {/* LOGO */}
-        <div
-          className={`flex items-center gap-3 px-3 py-4 ${
-            showText ? "justify-between" : "justify-center"
-          }`}
-        >
-          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 flex items-center justify-center rounded-md bg-gray-900 text-white font-semibold">
-              SF
-            </div>
-            {showText && (
-              <span className="text-lg font-semibold text-gray-900">
-                Stack Fusion
-              </span>
-            )}
-          </div>
-
-          {!isMini && !isMobile && showText && (
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="p-1 hover:bg-gray-200 rounded transition-colors shrink-0"
-            >
-              <ChevronRight
-                size={18}
-                className={`transition-transform duration-300 ${
-                  sidebarCollapsed ? "" : "rotate-180"
-                }`}
-              />
-            </button>
-          )}
+        <div className="px-6 py-5 text-xl font-semibold text-gray-900 flex items-center justify-center">
+          {!isMini || tabletHover ? "Stack Fusion" : "🖥"}
         </div>
 
         <div className="border-b" />
 
         {/* NAV */}
-        <nav className="flex-1 px-2 py-3 space-y-0.5 text-sm overflow-y-auto">
+        <nav className="flex-1 px-1 py-4 space-y-1 text-sm overflow-y-auto">
           {/* DASHBOARD */}
           <div
             onClick={() => {
               setActiveItem("Dashboard");
               setMobileOpen(false);
             }}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-md cursor-pointer ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer ${
               activeItem === "Dashboard"
                 ? "bg-gray-900 text-white"
                 : "text-gray-700 hover:bg-gray-100"
-            } ${!showText ? "justify-center" : ""}`}
-            title={!showText ? "Dashboard" : ""}
+            }`}
           >
-            <LayoutDashboard size={20} />
-            {showText && "Dashboard"}
+            <LayoutDashboard size={16} />
+            {(!isMini || tabletHover || isMobile) && "Dashboard"}
           </div>
 
           {/* LEAD SOURCING */}
           <div>
             <button
               onClick={() => setOpenLeadSourcing(!openLeadSourcing)}
-              className={`w-full flex items-center px-3 py-2.5 font-medium text-gray-700 rounded-md hover:bg-gray-100 ${
-                !showText ? "justify-center" : "justify-between"
-              }`}
-              title={!showText ? "Lead Sourcing" : ""}
+              className="w-full flex items-center justify-between px-3 py-2 font-medium text-gray-700 rounded-md hover:bg-gray-100"
             >
               <span className="flex items-center gap-3">
-                <Upload size={20} />
-                {showText && "Lead Sourcing"}
+                <Upload size={16} />
+                {(!isMini || tabletHover || isMobile) && "Lead Sourcing"}
               </span>
-              {showText && (
+              {(!isMini || tabletHover || isMobile) && (
                 <ChevronDown
                   size={16}
                   className={`transition-transform ${
@@ -96,8 +77,8 @@ export default function SidebarLayout({ children }) {
               )}
             </button>
 
-            {openLeadSourcing && showText && (
-              <div className="ml-6 mt-0.5 space-y-0.5">
+            {openLeadSourcing && (!isMini || tabletHover || isMobile) && (
+              <div className="ml-6 mt-1 space-y-1">
                 {[
                   { label: "Manual Upload", icon: "/icons/Manualupload.png" },
                   { label: "Attach CRM", icon: "/icons/Crm.png" },
@@ -138,15 +119,14 @@ export default function SidebarLayout({ children }) {
                 setActiveItem(label);
                 setMobileOpen(false);
               }}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-md cursor-pointer ${
+              className={`flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer ${
                 activeItem === label
                   ? "bg-gray-900 text-white"
                   : "text-gray-700 hover:bg-gray-100"
-              } ${!showText ? "justify-center" : ""}`}
-              title={!showText ? label : ""}
+              }`}
             >
-              <Icon size={20} />
-              {showText && label}
+              <Icon size={16} />
+              {(!isMini || tabletHover || isMobile) && label}
             </div>
           ))}
         </nav>
@@ -157,30 +137,25 @@ export default function SidebarLayout({ children }) {
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Desktop Sidebar */}
-      <aside
-  onClick={() => {
-    if (sidebarCollapsed) setSidebarCollapsed(false);
-  }}
-  className={`hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 bg-[#F9FAFB] z-20 transition-all duration-300 cursor-pointer ${
-    sidebarCollapsed ? "lg:w-20 border-r-2" : "lg:w-64 border-r"
-  }`}
->
-  <SidebarContent />
-</aside>
+      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 border-r bg-[#F9FAFB] z-20">
+        <SidebarContent />
+      </aside>
 
 
       {/* Tablet Sidebar */}
       <aside
-        className={`hidden md:flex lg:hidden md:fixed md:inset-y-0 md:left-0 bg-[#F9FAFB] z-20 transition-all duration-300 ${
-          tabletHover ? "md:w-64 border-r" : "md:w-20 border-r-2"
-        }`}
+        className="hidden md:flex lg:hidden md:fixed md:inset-y-0 md:left-0 md:w-20 border-r bg-[#F9FAFB] z-20 transition-all duration-300"
       >
         <SidebarContent isMini />
       </aside>
 
       {/* Mobile Top Bar */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-40 h-14 bg-white border-b flex items-center gap-3 px-4">
-        <button onClick={() => setMobileOpen(true)}>
+        <button
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open navigation menu"
+          className="p-2 hover:bg-gray-100 rounded-md"
+        >
           <Menu size={22} />
         </button>
         <span className="font-semibold">Stack Fusion</span>
@@ -189,8 +164,9 @@ export default function SidebarLayout({ children }) {
       {/* Mobile Overlay */}
       {mobileOpen && (
         <div
-          onClick={() => setMobileOpen(false)}
+          onClick={handleCloseMobile}
           className="md:hidden fixed inset-0 z-40 bg-black/40"
+          role="presentation"
         />
       )}
 
@@ -199,9 +175,14 @@ export default function SidebarLayout({ children }) {
         className={`md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-[#F9FAFB] border-r transform transition-transform duration-300 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        role="complementary"
       >
         <div className="flex justify-end p-4 border-b">
-          <button onClick={() => setMobileOpen(false)}>
+          <button
+            onClick={handleCloseMobile}
+            aria-label="Close navigation menu"
+            className="p-2 hover:bg-gray-100 rounded-md"
+          >
             <X size={20} />
           </button>
         </div>
@@ -209,11 +190,7 @@ export default function SidebarLayout({ children }) {
       </aside>
 
       {/* Main Content */}
-      <main
-        className={`flex-1 pt-14 overflow-y-auto transition-all duration-300 ${
-          sidebarCollapsed ? "md:ml-20 lg:ml-20" : "md:ml-20 lg:ml-64"
-        }`}
-      >
+      <main className="flex-1 md:ml-20 lg:ml-64 pt-14 overflow-y-auto">
         {children}
       </main>
     </div>
