@@ -26,7 +26,7 @@ export default function LeadManagementHeader() {
               <div className="space-y-2">
                 <p className="text-xs sm:text-sm lg:text-base text-gray-500">{card.title}</p>
 
-                <p className="text-xl sm:text-2xl lg:text-2xl font-semibold text-gray-900">
+                <p className="text-xl sm:text-2xl lg:text-xl font-semibold text-gray-900">
                   {card.value}
                 </p>
 

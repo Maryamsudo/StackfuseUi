@@ -16,7 +16,7 @@ import {
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"] });
 export default function SidebarLayout({ children }) {
-  const [openLeadSourcing, setOpenLeadSourcing] = useState(true);
+  const [openLeadSourcing, setOpenLeadSourcing] = useState(false);
   const [activeItem, setActiveItem] = useState("Attach CRM");
   const [tabletHover, setTabletHover] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,11 +33,12 @@ export default function SidebarLayout({ children }) {
         onMouseLeave={() => isMini && setTabletHover(false)}
       >
         {/* LOGO */}
-        <div className="px-6 py-5 text-xl font-semibold text-gray-900 flex items-center justify-center">
-          {!isMini || tabletHover ? "Stack Fusion" : "🖥"}
-        </div>
+       <div className="h-14 flex items-center px-4 text-lg font-semibold text-gray-900">
+      {!isMini || tabletHover ? "Stack Fusion" : "🖥"}
+    </div>
 
-        <div className="border-b" />
+   <div className="border-b" />
+
 
         {/* NAV */}
         <nav className="flex-1 px-1 py-4 space-y-1 text-sm overflow-y-auto">
@@ -135,9 +136,9 @@ export default function SidebarLayout({ children }) {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+  <div className="relative h-screen bg-gray-50"> 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 border-r bg-[#F9FAFB] z-20">
+      <aside className="hidden lg:flex lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 border-r z-20">
         <SidebarContent />
       </aside>
 
