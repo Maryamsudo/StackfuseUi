@@ -1,44 +1,25 @@
 "use client";
 
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
+import leads from "@/data/leadstable.json";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {  DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { MessageSquare, Phone, Linkedin, MoreHorizontal } from "lucide-react";
-const leads = [
-  {
-    name: "Sarah Johnson",
-    role: "VP of Sales",
-    initials: "SJ",
-    company: "Acme Corporation",
-    size: "500-1000",
-    industry: "Technology",
-    status: "Hot",
-    source: "LinkedIn",
-    enriched: true,
-  },
-  {
-    name: "Michael Chen",
-    role: "CTO",
-    initials: "MC",
-    company: "TechFlow Inc",
-    size: "100-500",
-    industry: "Software",
-    status: "Warm",
-    source: "Apollo",
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Marketing Director",
-    initials: "ER",
-    company: "Growth Labs",
-    size: "50-100",
-    industry: "Marketing",
-    status: "Cold",
-    source: "Manual",
-  },
-];
+
 const statusClasses = {
   Hot: "bg-red-100 text-red-600",
   Warm: "bg-orange-100 text-orange-600",
@@ -47,11 +28,11 @@ const statusClasses = {
 
 export default function LeadsTable() {
   return (
-   <main className="w-full">
+    <main className="w-full">
       {/* DESKTOP TABLE */}
       <div className="hidden sm:block rounded-xl border bg-white">
         <div className="border-b px-4 py-4">
-          <h2 className="text-lg font-semibold">Leads</h2>
+          <h2 className="text-base font-semibold">Leads</h2>
         </div>
 
         <div className="overflow-x-auto">
@@ -61,16 +42,18 @@ export default function LeadsTable() {
                 <TableHead className="w-12">
                   <Checkbox />
                 </TableHead>
-                <TableHead>Lead</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead className="hidden lg:table-cell">
+                <TableHead className="text-xs font-medium">Lead</TableHead>
+                <TableHead className="text-xs font-medium">Company</TableHead>
+                <TableHead className="hidden lg:table-cell text-xs font-medium">
                   Industry
                 </TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="hidden lg:table-cell">
+                <TableHead className="text-xs font-medium">Status</TableHead>
+                <TableHead className="hidden lg:table-cell text-xs font-medium">
                   Source
                 </TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-center text-xs font-medium">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
 
@@ -84,13 +67,13 @@ export default function LeadsTable() {
                   <TableCell>
                     <div className="flex gap-3">
                       <Avatar className="h-9 w-9 bg-indigo-100">
-                        <AvatarFallback className="font-semibold text-indigo-600">
+                        <AvatarFallback className="text-xs font-semibold text-indigo-600">
                           {lead.initials}
                         </AvatarFallback>
                       </Avatar>
 
                       <div>
-                        <div className="flex items-center gap-2 font-medium">
+                        <div className="flex items-center gap-2 text-sm font-medium">
                           {lead.name}
                           {lead.enriched && (
                             <Badge variant="secondary" className="text-xs">
@@ -106,14 +89,16 @@ export default function LeadsTable() {
                   </TableCell>
 
                   <TableCell>
-                    <p className="font-medium">{lead.company}</p>
+                    <p className="text-sm font-medium">{lead.company}</p>
                     <p className="text-xs text-muted-foreground">
                       {lead.size}
                     </p>
                   </TableCell>
 
                   <TableCell className="hidden lg:table-cell">
-                    <Badge variant="outline">{lead.industry}</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {lead.industry}
+                    </Badge>
                   </TableCell>
 
                   <TableCell>
@@ -124,7 +109,7 @@ export default function LeadsTable() {
                     </span>
                   </TableCell>
 
-                  <TableCell className="hidden lg:table-cell">
+                  <TableCell className="hidden lg:table-cell text-sm">
                     {lead.source}
                   </TableCell>
 
@@ -141,9 +126,13 @@ export default function LeadsTable() {
                           </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem className="text-sm">
+                            View
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-sm">
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-sm text-red-600">
                             Delete
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -163,27 +152,27 @@ export default function LeadsTable() {
           <div key={index} className="rounded-xl border bg-white p-4">
             <div className="flex gap-3">
               <Avatar className="h-10 w-10 bg-indigo-100">
-                <AvatarFallback className="font-semibold text-indigo-600">
+                <AvatarFallback className="text-sm font-semibold text-indigo-600">
                   {lead.initials}
                 </AvatarFallback>
               </Avatar>
 
               <div className="flex-1">
-                <p className="font-medium">{lead.name}</p>
+                <p className="text-sm font-medium">{lead.name}</p>
                 <p className="text-xs text-muted-foreground">
                   {lead.role}
                 </p>
               </div>
 
               <span
-                className={`h-fit rounded-full px-2 py-1 text-xs ${statusClasses[lead.status]}`}
+                className={`h-fit rounded-full px-2 py-1 text-xs font-medium ${statusClasses[lead.status]}`}
               >
                 {lead.status}
               </span>
             </div>
 
-            <div className="mt-3 text-sm">
-              <p className="font-medium">{lead.company}</p>
+            <div className="mt-3">
+              <p className="text-sm font-medium">{lead.company}</p>
               <p className="text-xs text-muted-foreground">
                 {lead.size} • {lead.industry} • {lead.source}
               </p>
@@ -203,9 +192,13 @@ export default function LeadsTable() {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>View</DropdownMenuItem>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem className="text-red-600">
+                  <DropdownMenuItem className="text-xs">
+                    View
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-xs">
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-xs text-red-600">
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
