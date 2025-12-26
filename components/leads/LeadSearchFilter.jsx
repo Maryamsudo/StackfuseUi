@@ -15,21 +15,25 @@ export default function LeadSearchFilter({ onFilterChange }) {
     setSelectedStatus("all");
     setSelectedSource("all");
     setSelectedIndustry("all");
-    onFilterChange({
-      search: "",
-      status: "all",
-      source: "all",
-      industry: "all",
-    });
+    if (onFilterChange) {
+      onFilterChange({
+        search: "",
+        status: "all",
+        source: "all",
+        industry: "all",
+      });
+    }
   };
 
   const handleFilterChange = () => {
-    onFilterChange({
-      search: searchQuery,
-      status: selectedStatus,
-      source: selectedSource,
-      industry: selectedIndustry,
-    });
+    if (onFilterChange) {
+      onFilterChange({
+        search: searchQuery,
+        status: selectedStatus,
+        source: selectedSource,
+        industry: selectedIndustry,
+      });
+    }
   };
 
   const activeFiltersCount =

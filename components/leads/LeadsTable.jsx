@@ -14,7 +14,7 @@ const statusClasses = {
   Cold: "bg-blue-100 text-blue-600",
 };
 
-export default function LeadsTable() {
+export default function LeadsTable({ filters = { search: "", status: "all", source: "all", industry: "all" } }) {
   return (
     <main className="w-full">
       {/* DESKTOP TABLE */}
