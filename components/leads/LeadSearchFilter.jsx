@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Search, Filter, X, ChevronDown } from "lucide-react";
 import { STATUS_OPTIONS, SOURCE_OPTIONS, INDUSTRY_OPTIONS } from "@/lib/constants";
 
@@ -11,7 +11,18 @@ export default function LeadSearchFilter({ onFilterChange }) {
   const [selectedSource, setSelectedSource] = useState("all");
   const [selectedIndustry, setSelectedIndustry] = useState("all");
 
-  const clearFilters = () => {
+  const handleFilterChange = useCallback((updates = {}) => {
+    if (onFilterChange) {
+      onFilterChange({
+        search: updates.search !== undefined ? updates.search : searchQuery,
+        status: updates.status !== undefined ? updates.status : selectedStatus,
+        source: updates.source !== undefined ? updates.source : selectedSource,
+        industry: updates.industry !== undefined ? updates.industry : selectedIndustry,
+      });
+    }
+  }, [onFilterChange, searchQuery, selectedStatus, selectedSource, selectedIndustry]);
+
+  const clearFilters = useCallback(() => {
     setSearchQuery("");
     setSelectedStatus("all");
     setSelectedSource("all");
@@ -24,23 +35,48 @@ export default function LeadSearchFilter({ onFilterChange }) {
         industry: "all",
       });
     }
-  };
+  }, [onFilterChange]);
 
-  const handleFilterChange = () => {
-    if (onFilterChange) {
-      onFilterChange({
-        search: searchQuery,
-        status: selectedStatus,
-        source: selectedSource,
-        industry: selectedIndustry,
-      });
-    }
-  };
+  const handleSearchChange = useCallback((e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    handleFilterChange({ search: value });
+  }, [handleFilterChange]);
 
-  const activeFiltersCount =
-    (selectedStatus !== "all" ? 1 : 0) +
-    (selectedSource !== "all" ? 1 : 0) +
-    (selectedIndustry !== "all" ? 1 : 0);
+  const handleStatusChange = useCallback((e) => {
+    const value = e.target.value;
+    setSelectedStatus(value);
+    handleFilterChange({ status: value });
+  }, [handleFilterChange]);
+
+  const handleSourceChange = useCallback((e) => {
+    const value = e.target.value;
+    setSelectedSource(value);
+    handleFilterChange({ source: value });
+  }, [handleFilterChange]);
+
+  const handleIndustryChange = useCallback((e) => {
+    const value = e.target.value;
+    setSelectedIndustry(value);
+    handleFilterChange({ industry: value });
+  }, [handleFilterChange]);
+
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("");
+    handleFilterChange({ search: "" });
+  }, [handleFilterChange]);
+
+  const toggleFilters = useCallback(() => {
+    setShowFilters((prev) => !prev);
+  }, []);
+
+  const activeFiltersCount = useMemo(
+    () =>
+      (selectedStatus !== "all" ? 1 : 0) +
+      (selectedSource !== "all" ? 1 : 0) +
+      (selectedIndustry !== "all" ? 1 : 0),
+    [selectedStatus, selectedSource, selectedIndustry]
+  );
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
@@ -57,18 +93,12 @@ export default function LeadSearchFilter({ onFilterChange }) {
             type="text"
             placeholder="Search by name, company, or email..."
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              handleFilterChange();
-            }}
+            onChange={handleSearchChange}
             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           {searchQuery && (
             <button
-              onClick={() => {
-                setSearchQuery("");
-                handleFilterChange();
-              }}
+              onClick={handleClearSearch}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               <X size={18} />
@@ -78,7 +108,7 @@ export default function LeadSearchFilter({ onFilterChange }) {
 
         {/* Filter Toggle Button */}
         <button
-          onClick={() => setShowFilters(!showFilters)}
+          onClick={toggleFilters}
           className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors relative"
         >
           <Filter size={18} />
@@ -103,10 +133,7 @@ export default function LeadSearchFilter({ onFilterChange }) {
             <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
             <select
               value={selectedStatus}
-              onChange={(e) => {
-                setSelectedStatus(e.target.value);
-                handleFilterChange();
-              }}
+              onChange={handleStatusChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {STATUS_OPTIONS.map((option) => (
@@ -122,10 +149,7 @@ export default function LeadSearchFilter({ onFilterChange }) {
             <label className="block text-sm font-medium text-gray-700 mb-2">Source</label>
             <select
               value={selectedSource}
-              onChange={(e) => {
-                setSelectedSource(e.target.value);
-                handleFilterChange();
-              }}
+              onChange={handleSourceChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {SOURCE_OPTIONS.map((option) => (
@@ -141,10 +165,7 @@ export default function LeadSearchFilter({ onFilterChange }) {
             <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
             <select
               value={selectedIndustry}
-              onChange={(e) => {
-                setSelectedIndustry(e.target.value);
-                handleFilterChange();
-              }}
+              onChange={handleIndustryChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {INDUSTRY_OPTIONS.map((option) => (

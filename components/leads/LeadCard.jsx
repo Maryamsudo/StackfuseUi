@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { Users, Box, Activity, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
 
 // Static import - will fail at build time if file doesn't exist
@@ -13,7 +13,7 @@ const iconMap = {
   Activity,
 };
 
-export default function LeadCard() {
+function LeadCard() {
   const [cards, setCards] = useState([]);
   const [error, setError] = useState(null);
 
@@ -63,12 +63,12 @@ export default function LeadCard() {
     <section className="space-y-6">
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {cards.map((card, i) => {
+        {cards.map((card) => {
           const Icon = iconMap[card.icon];
 
           return (
             <div
-              key={i}
+              key={`${card.title}-${card.value}`}
               className="bg-white border rounded-xl p-5 flex items-center justify-between min-h-32.5"
             >
               {/* Text */}
@@ -110,3 +110,5 @@ export default function LeadCard() {
     </section>
   );
 }
+
+export default memo(LeadCard);

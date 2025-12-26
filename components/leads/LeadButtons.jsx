@@ -1,11 +1,12 @@
 "use client";
 
+import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Plus } from "lucide-react";
 import leadsDataImport from "@/data/leadstable.json";
 
 export default function LeadButtons() {
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     try {
       const leads = leadsDataImport || [];
       
@@ -46,9 +47,9 @@ export default function LeadButtons() {
       console.error("Error exporting leads:", error);
       alert("Failed to export leads. Please try again.");
     }
-  };
+  }, []);
 
-  const handleAddLeads = () => {
+  const handleAddLeads = useCallback(() => {
     // Placeholder function - to be connected to modal/API later
     // TODO: Open add leads modal or navigate to add leads page
     alert("Add Leads functionality will be implemented soon.");
@@ -56,7 +57,7 @@ export default function LeadButtons() {
     // - Open a modal dialog
     // - Navigate to /leads/add page
     // - Or trigger an API call
-  };
+  }, []);
 
   return (
     <div className="px-6 flex items-center justify-end gap-3">
