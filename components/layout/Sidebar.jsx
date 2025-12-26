@@ -13,9 +13,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"] });
-export default function SidebarLayout({ children }) {
+export default function Sidebar({ children }) {
   const [openLeadSourcing, setOpenLeadSourcing] = useState(false);
   const [activeItem, setActiveItem] = useState("Attach CRM");
   const [tabletHover, setTabletHover] = useState(false);
@@ -28,7 +26,7 @@ export default function SidebarLayout({ children }) {
   const SidebarContent = ({ isMini = false, isMobile = false }) => {
     return (
       <div
-        className={`${inter.className} h-full flex flex-col bg-[#F9FAFB]`}
+        className="h-full flex flex-col bg-[#F9FAFB]"
         onMouseEnter={() => isMini && setTabletHover(true)}
         onMouseLeave={() => isMini && setTabletHover(false)}
       >

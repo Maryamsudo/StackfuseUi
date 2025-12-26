@@ -1,14 +1,19 @@
 import "./globals.css";
 import Sidebar from "@/components/layout/Sidebar";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600"] });
+
+export const metadata = {
+  title: "StackFuse - Lead Management",
+  description: "Manage and track your leads efficiently",
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="flex min-h-screen bg-gray-50">
-        <Sidebar />
-    <main className="flex-1  overflow-y-auto">
-          {children}
-        </main>
+    <html lang="en" className={inter.className}>
+      <body className="bg-gray-50">
+        <Sidebar>{children}</Sidebar>
       </body>
     </html>
   );
