@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
@@ -36,6 +36,43 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
     }
   }, []);
 
+  // Filter leads based on search and filter criteria
+  const filteredLeads = useMemo(() => {
+    if (!leads || leads.length === 0) return [];
+
+    return leads.filter((lead) => {
+      // Search filter - case-insensitive search in name, company, and role
+      const searchLower = (filters.search || "").toLowerCase().trim();
+      if (searchLower) {
+        const matchesSearch =
+          (lead.name || "").toLowerCase().includes(searchLower) ||
+          (lead.company || "").toLowerCase().includes(searchLower) ||
+          (lead.role || "").toLowerCase().includes(searchLower);
+        if (!matchesSearch) return false;
+      }
+
+      // Status filter
+      if (filters.status && filters.status !== "all") {
+        const leadStatus = (lead.status || "").toLowerCase();
+        if (leadStatus !== filters.status.toLowerCase()) return false;
+      }
+
+      // Source filter
+      if (filters.source && filters.source !== "all") {
+        const leadSource = (lead.source || "").toLowerCase();
+        if (leadSource !== filters.source.toLowerCase()) return false;
+      }
+
+      // Industry filter
+      if (filters.industry && filters.industry !== "all") {
+        const leadIndustry = (lead.industry || "").toLowerCase();
+        if (leadIndustry !== filters.industry.toLowerCase()) return false;
+      }
+
+      return true;
+    });
+  }, [leads, filters.search, filters.status, filters.source, filters.industry]);
+
   if (error) {
     return (
       <main className="w-full">
@@ -64,6 +101,18 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
         <div className="rounded-xl border bg-white p-8">
           <div className="text-center">
             <p className="text-gray-600">No leads found.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (filteredLeads.length === 0) {
+    return (
+      <main className="w-full">
+        <div className="rounded-xl border bg-white p-8">
+          <div className="text-center">
+            <p className="text-gray-600">No leads match your filters.</p>
           </div>
         </div>
       </main>
@@ -101,7 +150,7 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
             </TableHeader>
 
             <TableBody>
-              {leads.map((lead) => (
+              {filteredLeads.map((lead) => (
                 <TableRow key={`${lead.name}-${lead.company}`} className="hover:bg-muted/30">
                   <TableCell>
                     <Checkbox />
@@ -191,7 +240,7 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
 
       {/* MOBILE CARDS */}
       <div className="sm:hidden space-y-4">
-        {leads.map((lead) => (
+        {filteredLeads.map((lead) => (
           <div key={`${lead.name}-${lead.company}`} className="rounded-xl border bg-white p-4">
             <div className="flex gap-3">
               <Avatar className="h-10 w-10 bg-indigo-100">
