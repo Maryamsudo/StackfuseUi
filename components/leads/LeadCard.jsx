@@ -8,10 +8,9 @@ const iconMap = {
   Activity,
 };
 
-export default function LeadManagementHeader() {
+export default function LeadCard() {
   return (
     <section className="space-y-6">
-      <div className="space-y-1 bg-amber-900"></div>
       {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {cards.map((card, i) => {
