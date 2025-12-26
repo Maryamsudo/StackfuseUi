@@ -7,16 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu,DropdownMenuContent, DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
 import { MessageSquare, Phone, Linkedin, MoreHorizontal, AlertCircle } from "lucide-react";
+import { STATUS_CLASSES } from "@/lib/constants";
 
 // Static import - will fail at build time if file doesn't exist
 // Runtime validation added in component
 import leadsDataImport from "@/data/leadstable.json";
-
-const statusClasses = {
-  Hot: "bg-red-100 text-red-600",
-  Warm: "bg-orange-100 text-orange-600",
-  Cold: "bg-blue-100 text-blue-600",
-};
 
 export default function LeadsTable({ filters = { search: "", status: "all", source: "all", industry: "all" } }) {
   const [leads, setLeads] = useState([]);
@@ -151,7 +146,7 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
 
                   <TableCell>
                     <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${statusClasses[lead.status]}`}
+                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_CLASSES[lead.status] || "bg-gray-100 text-gray-600"}`}
                     >
                       {lead.status}
                     </span>
@@ -213,7 +208,7 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
               </div>
 
               <span
-                className={`h-fit rounded-full px-2 py-1 text-xs font-medium ${statusClasses[lead.status]}`}
+                className={`h-fit rounded-full px-2 py-1 text-xs font-medium ${STATUS_CLASSES[lead.status] || "bg-gray-100 text-gray-600"}`}
               >
                 {lead.status}
               </span>

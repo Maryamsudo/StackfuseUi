@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Search, Filter, X, ChevronDown } from "lucide-react";
+import { STATUS_OPTIONS, SOURCE_OPTIONS, INDUSTRY_OPTIONS } from "@/lib/constants";
 
 export default function LeadSearchFilter({ onFilterChange }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,10 +109,11 @@ export default function LeadSearchFilter({ onFilterChange }) {
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">All Status</option>
-              <option value="hot">Hot</option>
-              <option value="warm">Warm</option>
-              <option value="cold">Cold</option>
+              {STATUS_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -126,10 +128,11 @@ export default function LeadSearchFilter({ onFilterChange }) {
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">All Sources</option>
-              <option value="linkedin">LinkedIn</option>
-              <option value="apollo">Apollo</option>
-              <option value="manual">Manual</option>
+              {SOURCE_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -144,11 +147,11 @@ export default function LeadSearchFilter({ onFilterChange }) {
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">All Industries</option>
-              <option value="technology">Technology</option>
-              <option value="software">Software</option>
-              <option value="marketing">Marketing</option>
-              <option value="finance">Finance</option>
+              {INDUSTRY_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
