@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { Search, Filter, X, ChevronDown } from "lucide-react";
 import { STATUS_OPTIONS, SOURCE_OPTIONS, INDUSTRY_OPTIONS } from "@/lib/constants";
+import { sanitizeInput } from "@/lib/utils";
 
 export default function LeadSearchFilter({ onFilterChange }) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -38,9 +39,11 @@ export default function LeadSearchFilter({ onFilterChange }) {
   }, [onFilterChange]);
 
   const handleSearchChange = useCallback((e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    handleFilterChange({ search: value });
+    const rawValue = e.target.value;
+    // Sanitize input before using it
+    const sanitizedValue = sanitizeInput(rawValue, 100);
+    setSearchQuery(sanitizedValue);
+    handleFilterChange({ search: sanitizedValue });
   }, [handleFilterChange]);
 
   const handleStatusChange = useCallback((e) => {
@@ -94,6 +97,7 @@ export default function LeadSearchFilter({ onFilterChange }) {
             placeholder="Search by name, company, or email..."
             value={searchQuery}
             onChange={handleSearchChange}
+            maxLength={100}
             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
           {searchQuery && (
