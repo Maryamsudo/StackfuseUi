@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Image from "next/image";
 import {
   LayoutDashboard,
   Upload,
@@ -96,7 +97,13 @@ export default function Sidebar({ children }) {
                         : "text-gray-600 hover:bg-gray-100"
                     }`}
                   >
-                    <img src={item.icon} alt={item.label} className="h-4 w-4" />
+                    <Image
+                      src={item.icon}
+                      alt={item.label}
+                      width={16}
+                      height={16}
+                      className="h-4 w-4"
+                    />
                     {item.label}
                   </div>
                 ))}
