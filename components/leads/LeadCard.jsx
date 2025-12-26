@@ -1,7 +1,12 @@
 "use client";
 
-import cards from "@/data/leadCards.json";
-import {  Users,Box,Activity,TrendingUp, TrendingDown,} from "lucide-react";
+import { useState, useEffect } from "react";
+import { Users, Box, Activity, TrendingUp, TrendingDown, AlertCircle } from "lucide-react";
+
+// Static import - will fail at build time if file doesn't exist
+// Runtime validation added in component
+import cardsDataImport from "@/data/leadCards.json";
+
 const iconMap = {
   Users,
   Box,
@@ -9,6 +14,51 @@ const iconMap = {
 };
 
 export default function LeadCard() {
+  const [cards, setCards] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    try {
+      const data = cardsDataImport || [];
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format: expected an array");
+      }
+      if (data.length === 0) {
+        setError("No statistics data available.");
+      } else {
+        setCards(data);
+        setError(null);
+      }
+    } catch (err) {
+      console.error("Error processing cards data:", err);
+      setError("Failed to load statistics data.");
+      setCards([]);
+    }
+  }, []);
+
+  if (error) {
+    return (
+      <section className="space-y-6">
+        <div className="bg-white border rounded-xl p-6">
+          <div className="flex items-center gap-3 text-red-600">
+            <AlertCircle className="h-5 w-5" />
+            <p className="text-sm">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!cards || cards.length === 0) {
+    return (
+      <section className="space-y-6">
+        <div className="bg-white border rounded-xl p-6 text-center">
+          <p className="text-gray-600 text-sm">No statistics available.</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="space-y-6">
       {/* Cards */}

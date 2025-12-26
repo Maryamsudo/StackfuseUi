@@ -1,12 +1,16 @@
 "use client";
 
-import leads from "@/data/leadstable.json";
+import { useState, useEffect } from "react";
 import { Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu,DropdownMenuContent, DropdownMenuItem,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu";
-import { MessageSquare, Phone, Linkedin, MoreHorizontal } from "lucide-react";
+import { MessageSquare, Phone, Linkedin, MoreHorizontal, AlertCircle } from "lucide-react";
+
+// Static import - will fail at build time if file doesn't exist
+// Runtime validation added in component
+import leadsDataImport from "@/data/leadstable.json";
 
 const statusClasses = {
   Hot: "bg-red-100 text-red-600",
@@ -15,6 +19,62 @@ const statusClasses = {
 };
 
 export default function LeadsTable({ filters = { search: "", status: "all", source: "all", industry: "all" } }) {
+  const [leads, setLeads] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    try {
+      const data = leadsDataImport || [];
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format: expected an array");
+      }
+      if (data.length === 0) {
+        setError("No leads data available.");
+      } else {
+        setLeads(data);
+        setError(null);
+      }
+    } catch (err) {
+      console.error("Error processing leads data:", err);
+      setError("Failed to load leads data. Please try refreshing the page.");
+      setLeads([]);
+    }
+  }, []);
+
+  if (error) {
+    return (
+      <main className="w-full">
+        <div className="rounded-xl border bg-white p-8">
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center mb-4">
+              <AlertCircle className="h-6 w-6 text-red-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Error Loading Leads</h3>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Refresh Page
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!leads || leads.length === 0) {
+    return (
+      <main className="w-full">
+        <div className="rounded-xl border bg-white p-8">
+          <div className="text-center">
+            <p className="text-gray-600">No leads found.</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="w-full">
       {/* DESKTOP TABLE */}
