@@ -46,8 +46,8 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
             </TableHeader>
 
             <TableBody>
-              {leads.map((lead, index) => (
-                <TableRow key={index} className="hover:bg-muted/30">
+              {leads.map((lead) => (
+                <TableRow key={`${lead.name}-${lead.company}`} className="hover:bg-muted/30">
                   <TableCell>
                     <Checkbox />
                   </TableCell>
@@ -136,8 +136,8 @@ export default function LeadsTable({ filters = { search: "", status: "all", sour
 
       {/* MOBILE CARDS */}
       <div className="sm:hidden space-y-4">
-        {leads.map((lead, index) => (
-          <div key={index} className="rounded-xl border bg-white p-4">
+        {leads.map((lead) => (
+          <div key={`${lead.name}-${lead.company}`} className="rounded-xl border bg-white p-4">
             <div className="flex gap-3">
               <Avatar className="h-10 w-10 bg-indigo-100">
                 <AvatarFallback className="text-sm font-semibold text-indigo-600">
