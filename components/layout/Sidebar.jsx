@@ -196,7 +196,7 @@ export default function Sidebar({ children }) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-20 lg:ml-64 pt-14 overflow-y-auto">
+      <main className="flex-1 md:ml-20 lg:ml-64 pt-14 md:pt-0 overflow-y-auto">
         {children}
       </main>
     </div>
