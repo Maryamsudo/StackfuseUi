@@ -26,8 +26,7 @@ export default function Page() {
       </header>
 
       {/* MAIN CONTENT */}
-      <main className="flex flex-col gap-4 px-4 pb-6 pt-4 
-">
+      <main className="flex flex-col gap-4 px-4 pb-6 pt-4 ">
         <LeadCard />
         <LeadSearchFilter onFilterChange={setFilters} />
         <LeadsTable filters={filters} />
