@@ -33,7 +33,7 @@ export default function Sidebar({ children }) {
       >
         {/* LOGO */}
        <div className="h-14 flex items-center px-4 text-lg font-semibold text-gray-900">
-      {!isMini || tabletHover ? "Stack Fusion" : "🖥"}
+      {!isMini || tabletHover ? "StackFuse" : "SF"}
     </div>
 
    <div className="border-b" />

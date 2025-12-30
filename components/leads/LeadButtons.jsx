@@ -4,7 +4,8 @@ import { useCallback,useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, Plus } from "lucide-react";
 import leadsDataImport from "@/data/leadstable.json";
-import Toast from "@/components/ui/Toast";
+import { toast } from "sonner";
+
 
 export default function LeadButtons() {
   const [showToast, setShowToast] = useState(false);
@@ -51,16 +52,19 @@ export default function LeadButtons() {
     }
   }, []);
 
-const handleAddLeads = useCallback(() => {
+  const handleAddLeads = useCallback(() => {
+  toast.info("Add Leads functionality will be implemented soon.");
+}, []);
+
     // Placeholder function - to be connected to modal/API later
     // TODO: Open add leads modal or navigate to add leads page
-    setShowToast(true); // Show toast instead of alert
+     // Show toast instead of alert
 
     // Future implementation:
     // - Open a modal dialog
     // - Navigate to /leads/add page
     // - Or trigger an API call
-  }, []);
+
 
   return (
     <div className="px-6 flex items-center justify-end gap-3">
@@ -83,13 +87,8 @@ const handleAddLeads = useCallback(() => {
         Add Leads
       </Button>
       
-  {showToast && (
-    <Toast
-      message="Add Leads functionality will be implemented soon."
-      onClose={() => setShowToast(false)}
-    />
-  )}
+  
 </div>
-    
+
   );
 }
