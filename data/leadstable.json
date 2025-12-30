@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Sarah Johnson",
+    "role": "VP of Sales",
+    "initials": "SJ",
+    "company": "Acme Corporation",
+    "size": "500-1000",
+    "industry": "Technology",
+    "status": "Hot",
+    "source": "LinkedIn",
+    "enriched": true
+  },
+  {
+    "name": "Michael Chen",
+    "role": "CTO",
+    "initials": "MC",
+    "company": "TechFlow Inc",
+    "size": "100-500",
+    "industry": "Software",
+    "status": "Warm",
+    "source": "Apollo"
+  },
+  {
+    "name": "Emily Rodriguez",
+    "role": "Marketing Director",
+    "initials": "ER",
+    "company": "Growth Labs",
+    "size": "50-100",
+    "industry": "Marketing",
+    "status": "Cold",
+    "source": "Manual"
+  }
+]
